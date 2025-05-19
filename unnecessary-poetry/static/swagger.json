@@ -1,0 +1,145 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Unnecessary Poetry API",
+    "description": "A simple API for creating silly and unnecessary poems with GenAI language models",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "/",
+      "description": "Local server"
+    }
+  ],
+  "paths": {
+    "/api/poem": {
+      "post": {
+        "summary": "Create unnecessary poems with AI",
+        "description": "Send a theme (or themes), and the AI will use these to generate a poem",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["text"],
+                "properties": {
+                  "text": {
+                    "type": "string",
+                    "description": "Text containing the theme (or themes) of the poem",
+                    "example": "clouds"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful poem generation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "response": {
+                      "type": "string",
+                      "description": "The unnecessary poem",
+                      "example": "Softly drifting, wispy and grey // Floating shadows on the day // Their gentle caress upon my skin // As the world outside gives in // To the serenity of their flight // A fleeting peace, a wistful sight // In the clouds, my worries take flight"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "Error message",
+                      "example": "Text is required and must be a string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "Error message",
+                      "example": "Failed to get response from LLM"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "Rate limit exceeded message",
+                      "example": "Rate limit exceeded. Try again in 60 seconds."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "summary": "Health Check",
+        "description": "Check the health status of the application",
+        "responses": {
+          "200": {
+            "description": "Health status information",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "Overall health status",
+                      "example": "healthy"
+                    },
+                    "llm_api": {
+                      "type": "string",
+                      "description": "Status of the LLM API connection",
+                      "example": "ok"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "description": "ISO timestamp of the health check",
+                      "example": "2025-05-19T12:34:56.789Z"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
